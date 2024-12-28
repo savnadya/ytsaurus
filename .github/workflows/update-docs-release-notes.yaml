@@ -1,0 +1,31 @@
+name: Generate Release Notes
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  generate-notes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate release notes
+        run: |
+          ./ya make -r yt/yt/scripts/generate_release_notes
+          ./yt/yt/scripts/generate_release_notes/generate_release_notes -o "yt/docs/en/_includes/releases" -o "yt/docs/ru/_includes/releases"
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create a new branch
+        run: |
+          git checkout -b members/ci/update-release-notes-${{ github.event.release.tag_name }}"
+          git add .
+          git commit -m "Update release notes"
+          git push origin members/ci/update-release-notes-${{ github.event.release.tag_name }}"
+
