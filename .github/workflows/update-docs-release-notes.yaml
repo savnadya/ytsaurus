@@ -17,8 +17,6 @@ jobs:
 
       - name: Generate release notes
         run: |
-          ./ya make -r yt/yt/scripts/generate_release_notes
-          ./yt/yt/scripts/generate_release_notes/generate_release_notes -o "yt/docs/en/_includes/releases" -o "yt/docs/ru/_includes/releases"
           echo "123" > ./yt/docs/en/_includes/releases/chyt.md
 
       - name: Configure Git
