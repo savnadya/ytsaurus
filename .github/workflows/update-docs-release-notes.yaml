@@ -37,8 +37,10 @@ jobs:
           git push origin members/ci/update-release-notes-${{ github.event.release.tag_name }}
           git branch
           git checkout main
-          git log main | head
-          git log members/ci/update-release-notes-${{ github.event.release.tag_name }} | head
+          echo "HERE git log main"
+          git log main | head -20
+          echo "HERE git log my branch"
+          git log members/ci/update-release-notes-${{ github.event.release.tag_name }} | head -20
 
 
       - name: Create Pull Request
