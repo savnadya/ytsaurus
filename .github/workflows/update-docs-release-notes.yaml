@@ -34,7 +34,7 @@ jobs:
           git add .
           git status
           git commit -m "Update release notes"
-          git push origin members/ci/update-release-notes-${{ github.event.release.tag_name }}
+          git push --force origin members/ci/update-release-notes-${{ github.event.release.tag_name }}
           git branch
           git checkout main
           echo "HERE git log main"
