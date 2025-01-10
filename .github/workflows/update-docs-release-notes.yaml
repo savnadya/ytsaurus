@@ -18,6 +18,8 @@ jobs:
       - name: Generate release notes
         run: |
           echo "123" > ./yt/docs/en/_includes/releases/chyt.md
+          git status
+          git diff
 
       - name: Configure Git
         run: |
@@ -26,15 +28,22 @@ jobs:
 
       - name: Create a new branch
         run: |
+          git checkout -b members/ci/update-release-notes-${{ github.event.release.tag_name }}
           git add .
+          git status
           git commit -m "Update release notes"
-          git push origin HEAD:members/ci/update-release-notes-${{ github.event.release.tag_name }}
+          git push origin members/ci/update-release-notes-${{ github.event.release.tag_name }}
+          git log | head
+          git log members/ci/update-release-notes-${{ github.event.release.tag_name }} | head
+
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Automated changes
           branch: members/ci/update-release-notes-${{ github.event.release.tag_name }}
+          base: main
           title: "Update Release Notes"
           body: |
             Update release notes in the documentation.
