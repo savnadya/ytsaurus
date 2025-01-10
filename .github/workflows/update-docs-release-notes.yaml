@@ -4,6 +4,9 @@ on:
   release:
     types: [created, updated]
 
+permissions:
+  pull-requests: write
+
 jobs:
   generate-notes:
     runs-on: ubuntu-latest
@@ -25,17 +28,15 @@ jobs:
 
       - name: Create a new branch
         run: |
-          git checkout -b members/ci/update-release-notes-${{ github.event.release.tag_name }}
           git add .
           git commit -m "Update release notes"
-          git push origin members/ci/update-release-notes-${{ github.event.release.tag_name }}
+          git push origin HEAD:members/ci/update-release-notes-${{ github.event.release.tag_name }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: members/ci/update-release-notes-${{ github.event.release.tag_name }}
-          base: main
           title: "Update Release Notes"
           body: |
             Update release notes in the documentation.
